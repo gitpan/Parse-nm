@@ -3,8 +3,9 @@ use warnings;
 
 package Parse::nm;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
+use Carp 'croak';
 use Regexp::Assemble;
 use String::ShellQuote;
 
@@ -12,7 +13,7 @@ sub new
 {
     my ($class, %args) = @_;
     _build_filters(\%args);
-    bless \%args, (ref $class ? ref $class : $class);
+    return bless \%args, (ref $class ? ref $class : $class);
 }
 
 sub _build_filters
@@ -27,8 +28,8 @@ sub _build_filters
     if (exists $args->{filters}) {
         my @f = @{$args->{filters}};
         for my $f (@f) {
-            my $name = $f->{name};
-            my $type = $f->{type};
+            my $name = $f->{name} || '\S+';
+            my $type = $f->{type} || '[A-Z]';
             $args->{_re}->add("^$name +$type +");
             push @{$args->{_comp_filters}}, [
                 qr/^($name) +($type) +/, $f->{action}
@@ -52,9 +53,11 @@ sub run
     my @options = @{$args{options}};
     my @files = ref $args{files} ? @{$args{files}} : $args{files};
     #open my $nm, 'nm '.join(' ', map { my $x = $_; $x =~ s/"/\\"/g; qq{"$x"} } @files).' |'
-    #    or die;
-    open my $nm, shell_quote('nm', @options, @files).' |';
-    return $self->parse($nm, %args);
+    open my $nm, '-|', shell_quote('nm', '-P', @options, @files)
+        or croak "Can't run 'nm': $!";
+    my $r = $self->parse($nm, %args);
+    close $nm;
+    return $r;
 }
 
 
@@ -73,6 +76,7 @@ sub parse
             }
         }
     }
+    return ();
 }
 
 1;
