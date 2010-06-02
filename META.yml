@@ -3,6 +3,7 @@ abstract: "Run and parse 'nm' command output with filter callbacks"
 author:
   - 'Olivier Mengué <dolmen@cpan.org>'
 build_requires:
+  File::Spec: 0
   Module::Build: 0.3607
   Test::More: 0.94
 configure_requires:
@@ -16,12 +17,12 @@ name: Parse-nm
 provides:
   Parse::nm:
     file: lib/Parse/nm.pm
-    version: 0.02
+    version: 0.03
 requires:
   Regexp::Assemble: 0.34
   String::ShellQuote: 1.03
 resources:
   bugtracker: http://rt.cpan.org/NoAuth/Bugs.html?Dist=Parse-nm
   homepage: http://github.com/dolmen/parse-nm
-  repository: http://github.com/dolmen/parse-nm
-version: 0.02
+  repository: http://github.com/dolmen/parse-nm.git
+version: 0.03

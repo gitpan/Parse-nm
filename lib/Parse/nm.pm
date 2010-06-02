@@ -3,7 +3,7 @@ use warnings;
 
 package Parse::nm;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 use Carp 'croak';
 use Regexp::Assemble;
@@ -50,8 +50,8 @@ sub run
     my ($self, %args) = @_;
     %args = (%{$self}, %args) if ref $self;
 
-    my @options = @{$args{options}};
-    my @files = ref $args{files} ? @{$args{files}} : $args{files};
+    my @options = exists $args{options} ? @{$args{options}} : ();
+    my @files = ref $args{files} ? @{$args{files}} : ($args{files});
     #open my $nm, 'nm '.join(' ', map { my $x = $_; $x =~ s/"/\\"/g; qq{"$x"} } @files).' |'
     open my $nm, '-|', shell_quote('nm', '-P', @options, @files)
         or croak "Can't run 'nm': $!";

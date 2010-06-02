@@ -8,3 +8,5 @@ META.yml
 README
 t/00-load.t
 t/10-simple.t
+t/11-run.t
+t/t.c

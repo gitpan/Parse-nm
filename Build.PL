@@ -13,7 +13,7 @@ my $builder = Module::Build->new(
 	meta_add    => {
 		resources => {
 			homepage => 'http://github.com/dolmen/parse-nm',
-			repository => 'http://github.com/dolmen/parse-nm',
+			repository => 'http://github.com/dolmen/parse-nm.git',
 			bugtracker => 'http://rt.cpan.org/NoAuth/Bugs.html?Dist=Parse-nm',
 		},
 	},
@@ -24,6 +24,7 @@ my $builder = Module::Build->new(
 	build_requires => {
 		'Module::Build' => '0.3607',
 		'Test::More' => '0.94',
+		'File::Spec' => 0,
 	},
 );
 
