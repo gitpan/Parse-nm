@@ -1,5 +1,5 @@
 
-char TestVar;
+char TestVar = 42;
 
 int TestFunc()
 {
